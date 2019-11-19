@@ -15,9 +15,9 @@ public interface TellerRepository extends JpaRepository<Teller, Long> {
 //	@Query("SELECT * FROM teller")
 	List<Teller> findAll();
 
-	@Query(value = "FROM teller u WHERE u.teller_id = :teller_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM teller u WHERE u.teller_id = :teller_id", nativeQuery = true)
 	Teller findById(@Param("teller_id") int tellerId);
 	
-	@Query(value = "FROM teller u WHERE u.teller_no = :teller_no", nativeQuery = true)
+	@Query(value = "SELECT * FROM teller u WHERE u.teller_no = :teller_no", nativeQuery = true)
 	Teller findTellerNo(@Param("teller_no") String tellerNo);
 }

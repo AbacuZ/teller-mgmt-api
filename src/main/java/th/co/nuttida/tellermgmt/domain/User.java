@@ -29,7 +29,7 @@ public class User implements Serializable {
 	@Column(name = "username")
 	private String username;
 
-	@JsonProperty(access = Access.WRITE_ONLY)
+        @Column(name = "password")
 	private String password;
 
 	@Column(name = "firstname")

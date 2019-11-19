@@ -16,47 +16,51 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import th.co.nuttida.tellermgmt.domain.GenericResponse;
 import th.co.nuttida.tellermgmt.domain.User;
+import th.co.nuttida.tellermgmt.domain.UserLogin;
 import th.co.nuttida.tellermgmt.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/tellermgmt/user")
 @Api(value = "Teller Management System", description = "User Controller")
 public class UserController {
-	@Autowired
+
+    @Autowired
     private UserService userService;
-	
-	@GetMapping
+
+    @GetMapping
     @ApiOperation(value = "Get all user", notes = "")
     public ResponseEntity<List<User>> getAllUser() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
-	
-	@GetMapping("/{id}")
+
+    @GetMapping("/{id}")
     @ApiOperation(value = "Get user by id", notes = "")
     public User getUserById(
             @ApiParam(value = "A user id", required = true)
             @PathVariable int id) {
         return userService.findUserById(id);
     }
-	
-	@GetMapping("/find-by-username/{username}")
+
+    @GetMapping("/find-by-username/{username}")
     @ApiOperation(value = "Get user data by username", notes = "")
     public User getUserByUsername(
             @ApiParam(value = "A username", required = true)
             @PathVariable String username) {
         return userService.findUserByUsername(username);
     }
-	
-	@PostMapping
+
+    @PostMapping
     @ApiOperation(value = "Add user", notes = "")
     public ResponseEntity<User> addUser(
             @ApiParam(value = "A new user data", required = true)
             @RequestBody User user) {
         return new ResponseEntity<>(userService.addUser(user), HttpStatus.OK);
     }
-	
-	@PutMapping("/edit/{id}")
+
+    @PutMapping("/edit/{id}")
     @ApiOperation(value = "Update user by id", notes = "")
     public ResponseEntity<User> updateUser(
             @ApiParam(value = "A user id", required = true)
@@ -65,12 +69,21 @@ public class UserController {
             @RequestBody User userUpdates) {
         return new ResponseEntity<>(userService.updateUser(id, userUpdates), HttpStatus.OK);
     }
-	
-	@GetMapping("/delete-user/{id}/{userDelete}")
+
+    @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Delete user by id", notes = "")
     public ResponseEntity<User> deleteUser(
             @ApiParam(value = "A user id", required = true)
             @PathVariable int id) {
-        return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+    @PostMapping("/login")
+    @ApiOperation(value = "Login", notes = "")
+    public ResponseEntity<GenericResponse> userLogin(
+        @ApiParam(value = "A user id", required = true)
+        @RequestBody UserLogin userLogin) {
+        return new ResponseEntity<>(userService.userLogin(userLogin), HttpStatus.OK);
     }
 }

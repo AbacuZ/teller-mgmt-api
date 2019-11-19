@@ -17,10 +17,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //	@Query("SELECT * FROM user")
 	List<User> findAll();
 
-	@Query(value = "FROM user u WHERE u.username = :username", nativeQuery = true)
+	@Query(value = "SELECT * FROM user u WHERE u.username = :username", nativeQuery = true)
 	User findByUsername(@Param("username") String username);
 
-	@Query(value = "FROM user u WHERE u.user_id = :user_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM user u WHERE u.user_id = :user_id", nativeQuery = true)
 	User findById(@Param("user_id") int userId);
 
 //	@Query(value = "SELECT COUNT(id) as count_id FROM user WHERE user_id = :user_id", nativeQuery = true)
@@ -31,4 +31,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "DELETE user WHERE user_id = :user_id", nativeQuery = true)
 	void delete(@Param("user_id") int userId);
 
+        @Query(value = "SELECT * FROM user u WHERE u.username = :username AND u.password = :password", nativeQuery = true)
+        User checkLoginUser(@Param("username") String username, @Param("password") String password);
 }
