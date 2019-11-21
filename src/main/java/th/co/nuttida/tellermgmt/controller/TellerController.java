@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.RequestParam;
 import th.co.nuttida.tellermgmt.domain.Teller;
+import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
 import th.co.nuttida.tellermgmt.service.TellerService;
 
 @RestController
@@ -21,18 +23,31 @@ import th.co.nuttida.tellermgmt.service.TellerService;
 @Api(value = "Teller Management System", description = "Teller Controller")
 public class TellerController {
 
-	@Autowired
-	private TellerService tellerService;
+    @Autowired
+    private TellerService tellerService;
 
-	@GetMapping
-	@ApiOperation(value = "Get all teller", notes = "")
-	public ResponseEntity<List<Teller>> getAllTeller() {
-		return new ResponseEntity<>(tellerService.findAll(), HttpStatus.OK);
-	}
+    @GetMapping
+    @ApiOperation(value = "Get all teller", notes = "")
+    public ResponseEntity<List<Teller>> getAllTeller() {
+        return new ResponseEntity<>(tellerService.findAll(), HttpStatus.OK);
+    }
 
-	@GetMapping("/{id}")
-	@ApiOperation(value = "Get teller by id", notes = "")
-	public Teller getTellerTellerById(@ApiParam(value = "A teller details id", required = true) @PathVariable int id) {
-		return tellerService.findTellerById(id);
-	}
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get teller by id", notes = "")
+    public Teller getTellerTellerById(
+            @ApiParam(value = "A teller details id", required = true) 
+            @PathVariable int id) {
+        return tellerService.findTellerById(id);
+    }
+    
+
+    @GetMapping("/search")
+    @ApiOperation(value = "Search teller", notes = "")
+    public TellerSearchPaging searchTeller(
+            @ApiParam(value = "page number", required = false)
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @ApiParam(value = "page size", required = false)
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        return tellerService.findTeller(pageNo, pageSize);
+    }
 }

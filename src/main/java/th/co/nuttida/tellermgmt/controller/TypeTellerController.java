@@ -21,18 +21,20 @@ import th.co.nuttida.tellermgmt.service.TypeTellerService;
 @Api(value = "Teller Management System", description = "Type Teller Controller")
 public class TypeTellerController {
 
-	@Autowired
-	private TypeTellerService typeTellerService;
+    @Autowired
+    private TypeTellerService typeTellerService;
 
-	@GetMapping
-	@ApiOperation(value = "Get all type teller", notes = "")
-	public ResponseEntity<List<TypeTeller>> getAllTypeTeller() {
-		return new ResponseEntity<>(typeTellerService.findAll(), HttpStatus.OK);
-	}
+    @GetMapping
+    @ApiOperation(value = "Get all type teller", notes = "")
+    public ResponseEntity<List<TypeTeller>> getAllTypeTeller() {
+        return new ResponseEntity<>(typeTellerService.findAll(), HttpStatus.OK);
+    }
 
-	@GetMapping("/{id}")
-	@ApiOperation(value = "Get type teller by id", notes = "")
-	public TypeTeller getTypeTellerById(@ApiParam(value = "A type teller id", required = true) @PathVariable int id) {
-		return typeTellerService.findTypeTellerById(id);
-	}
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get type teller by id", notes = "")
+    public TypeTeller getTypeTellerById(
+            @ApiParam(value = "A type teller id", required = true) 
+            @PathVariable int id) {
+        return typeTellerService.findTypeTellerById(id);
+    }
 }
