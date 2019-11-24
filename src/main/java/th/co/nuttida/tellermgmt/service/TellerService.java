@@ -34,6 +34,10 @@ public class TellerService {
         return found;
     }
     
+    public Teller saveTeller(Teller teller) {
+        return tellerRepository.save(teller);
+    }
+    
     @Transactional(readOnly = true)
     public TellerSearchPaging findTeller(int pageNo, int pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("tellerId").ascending());

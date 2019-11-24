@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
@@ -20,11 +22,19 @@ import th.co.nuttida.tellermgmt.service.TellerService;
 
 @RestController
 @RequestMapping("/api/v1/tellermgmt/teller")
-@Api(value = "Teller Management System", description = "Teller Controller")
+@Api(value = "Teller Management System")
 public class TellerController {
 
     @Autowired
     private TellerService tellerService;
+
+    @PostMapping
+    @ApiOperation(value = "Save teller", notes = "")
+    public ResponseEntity<Teller> saveTeller(
+        @ApiParam(value = "A teller details id", required = true) 
+        @RequestBody Teller teller) {
+        return new ResponseEntity<>(tellerService.saveTeller(teller), HttpStatus.OK);
+    }
 
     @GetMapping
     @ApiOperation(value = "Get all teller", notes = "")

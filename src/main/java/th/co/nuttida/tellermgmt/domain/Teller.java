@@ -53,6 +53,12 @@ public class Teller implements Serializable {
 	@Column(name = "district_id")
 	private int districtId;
 
+	@Column(name = "province_id")
+	private int provinceId;
+
+	@Column(name = "zone_id")
+	private int zoneId;
+
 	@Column(name = "version_teller_id")
 	private int versionTellerId;
 
