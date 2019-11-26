@@ -14,8 +14,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import th.co.nuttida.tellermgmt.domain.DataInsertTeller;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
 import th.co.nuttida.tellermgmt.service.TellerService;
@@ -31,9 +33,17 @@ public class TellerController {
     @PostMapping
     @ApiOperation(value = "Save teller", notes = "")
     public ResponseEntity<Teller> saveTeller(
-        @ApiParam(value = "A teller details id", required = true) 
-        @RequestBody Teller teller) {
-        return new ResponseEntity<>(tellerService.saveTeller(teller), HttpStatus.OK);
+            @ApiParam(value = "A teller", required = true)
+            @RequestBody DataInsertTeller dataInsertTeller) {
+        return new ResponseEntity<>(tellerService.saveTeller(dataInsertTeller), HttpStatus.OK);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Save teller", notes = "")
+    public ResponseEntity<Teller> updateTeller(
+            @ApiParam(value = "A teller", required = true)
+            @RequestBody DataInsertTeller dataInsertTeller) {
+        return new ResponseEntity<>(tellerService.updateTeller(dataInsertTeller), HttpStatus.OK);
     }
 
     @GetMapping
@@ -45,11 +55,10 @@ public class TellerController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get teller by id", notes = "")
     public Teller getTellerTellerById(
-            @ApiParam(value = "A teller details id", required = true) 
+            @ApiParam(value = "A teller details id", required = true)
             @PathVariable int id) {
         return tellerService.findTellerById(id);
     }
-    
 
     @GetMapping("/search")
     @ApiOperation(value = "Search teller", notes = "")
