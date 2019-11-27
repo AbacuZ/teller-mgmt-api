@@ -15,44 +15,63 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import th.co.nuttida.tellermgmt.domain.LogBook;
 import th.co.nuttida.tellermgmt.service.LogBookService;
 
 @RestController
 @RequestMapping("/api/v1/tellermgmt/logbook")
-@Api(value = "Teller Management System", description = "LogBook Controller")
+@Api(value = "Teller Management System")
 public class LogBookController {
 
-	@Autowired
-	private LogBookService logBookService;
+    @Autowired
+    private LogBookService logBookService;
 
-	@GetMapping
-	@ApiOperation(value = "Get all logbook", notes = "")
-	public ResponseEntity<List<LogBook>> getAllLogBook() {
-		return new ResponseEntity<>(logBookService.findAll(), HttpStatus.OK);
-	}
+    @GetMapping
+    @ApiOperation(value = "Get all logbook", notes = "")
+    public ResponseEntity<List<LogBook>> getAllLogBook() {
+        return new ResponseEntity<>(logBookService.findAll(), HttpStatus.OK);
+    }
 
-	@GetMapping("/{id}")
-	@ApiOperation(value = "Get logbook by id", notes = "")
-	public LogBook getLogBookById(
-			@ApiParam(value = "A logbook id", required = true) 
-			@PathVariable int id) {
-		return logBookService.findLogBookById(id);
-	}
-
-	@GetMapping("/find-by-teller-id/{tellerid}")
-	@ApiOperation(value = "Get user logbook by teller id", notes = "")
-	public List<LogBook> getLogBookByTellerId(
-			@ApiParam(value = "A teller ID", required = true) 
-			@PathVariable String tellerId) {
-		return logBookService.findLogBookByTellerId(tellerId);
-	}
-	
-	@PostMapping
+    @PostMapping
     @ApiOperation(value = "Add logbook", notes = "")
     public ResponseEntity<LogBook> addLogBook(
             @ApiParam(value = "A new logbook data", required = true)
             @RequestBody LogBook logBook) {
         return new ResponseEntity<>(logBookService.addLogBook(logBook), HttpStatus.OK);
+    }
+    
+    @PutMapping
+    @ApiOperation(value = "Update logbook by id", notes = "")
+    public ResponseEntity<LogBook> updateLogBookById(
+            @ApiParam(value = "A logbook id", required = true)
+            @RequestBody LogBook logBook) {
+        return new ResponseEntity<>(logBookService.updateLogBook(logBook), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete logbook by id", notes = "")
+    public ResponseEntity<LogBook> deleteLogBookById(
+            @ApiParam(value = "A logbook id", required = true)
+            @PathVariable int id) {
+        logBookService.deleteLogBook(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get logbook by id", notes = "")
+    public LogBook getLogBookById(
+            @ApiParam(value = "A logbook id", required = true)
+            @PathVariable int id) {
+        return logBookService.findLogBookById(id);
+    }
+
+    @GetMapping("/find-by-teller-id/{tellerId}")
+    @ApiOperation(value = "Get user logbook by teller id", notes = "")
+    public ResponseEntity<List<LogBook>> getLogBookByTellerId(
+            @ApiParam(value = "A teller ID", required = true)
+            @PathVariable Integer tellerId) {
+        return new ResponseEntity<>(logBookService.findLogBookByTellerId(tellerId), HttpStatus.OK);
     }
 }

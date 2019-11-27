@@ -16,6 +16,6 @@ public interface TellerDetailsRepository
 //	@Query("SELECT * FROM teller_details")
 	List<TellerDetails> findAll();
 
-	@Query(value = "FROM teller_details u WHERE u.teller_details_id = :teller_details_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM teller_details u WHERE u.teller_details_id = :teller_details_id", nativeQuery = true)
 	TellerDetails findById(@Param("teller_details_id") int tellerDetailsId);
 }

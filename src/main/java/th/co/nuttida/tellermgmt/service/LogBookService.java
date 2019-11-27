@@ -1,6 +1,7 @@
 package th.co.nuttida.tellermgmt.service;
 
 import java.util.List;
+import org.springframework.beans.BeanUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,34 +14,46 @@ import th.co.nuttida.tellermgmt.domain.LogBook;
 @Transactional
 public class LogBookService {
 
-	@Autowired
-	private LogBookRepository logBookRepository;
+    @Autowired
+    private LogBookRepository logBookRepository;
 
-	public LogBook createLogBook(LogBook logBook) {
-		logBook.setLogBookId(logBook.getLogBookId());
-		logBook.setTellerId(logBook.getTellerId());
-		logBook.setDateTime(logBook.getDateTime());
-		logBook.setProblem(logBook.getProblem());
-		logBook.setSolution(logBook.getSolution());
-		logBook.setUsername(logBook.getUsername());
-		return logBookRepository.save(logBook);
-	}
+    public LogBook createLogBook(LogBook logBook) {
+        logBook.setLogBookId(logBook.getLogBookId());
+        logBook.setTellerId(logBook.getTellerId());
+        logBook.setDateTime(logBook.getDateTime());
+        logBook.setProblem(logBook.getProblem());
+        logBook.setSolution(logBook.getSolution());
+        logBook.setUsername(logBook.getUsername());
+        return logBookRepository.save(logBook);
+    }
+    
+    public LogBook updateLogBook(LogBook logBook) {
+        LogBook logBookFound = logBookRepository.findById(logBook.getLogBookId());
+        BeanUtils.copyProperties(logBook, logBookFound);
+        logBookFound.setLogBookId(logBook.getLogBookId());
+        return logBookRepository.saveAndFlush(logBookFound);
+    }
+    
+    public void deleteLogBook(int id) {
+        LogBook logBookFound = logBookRepository.findById(id);
+        logBookRepository.delete(logBookFound);
+    }
 
-	public List<LogBook> findAll() {
-		return logBookRepository.findAll();
-	}
+    public List<LogBook> findAll() {
+        return logBookRepository.findAll();
+    }
 
-	public LogBook findLogBookById(int id) {
-		LogBook found = logBookRepository.findById(id);
-		return found;
-	}
+    public LogBook findLogBookById(int id) {
+        LogBook found = logBookRepository.findById(id);
+        return found;
+    }
 
-	public List<LogBook> findLogBookByTellerId(String tellerId) {
-		return logBookRepository.ByTellerId(tellerId);
-	}
+    public List<LogBook> findLogBookByTellerId(Integer tellerId) {
+        return logBookRepository.ByTellerId(tellerId);
+    }
 
-	public LogBook addLogBook(LogBook logBook) {
-		return logBookRepository.save(logBook);
-	}
+    public LogBook addLogBook(LogBook logBook) {
+        return logBookRepository.save(logBook);
+    }
 
 }

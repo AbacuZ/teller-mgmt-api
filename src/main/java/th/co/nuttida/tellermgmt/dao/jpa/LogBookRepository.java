@@ -15,9 +15,12 @@ public interface LogBookRepository extends JpaRepository<LogBook, Long> {
 //	@Query("SELECT * FROM logbook")
 	List<LogBook> findAll();
 
-	@Query(value = "FROM logbook u WHERE u.logbook_id = :logbook_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM logbook u WHERE u.logbook_id = :logbook_id", nativeQuery = true)
 	LogBook findById(@Param("logbook_id") int logbookId);
 
-	@Query(value = "FROM logbook u WHERE u.teller_id = :teller_id", nativeQuery = true)
-	List<LogBook> ByTellerId(@Param("teller_id") String tellerId);
+	@Query(value = "SELECT * FROM logbook WHERE teller_id = :teller_id", nativeQuery = true)
+	List<LogBook> ByTellerId(@Param("teller_id") Integer tellerId);
+        
+        @Query(value = "DELETE * FROM logbook WHERE logbook_id = :id", nativeQuery = true)
+        void deleteLogBookById(@Param("id") int id);
 }

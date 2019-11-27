@@ -70,7 +70,7 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUser(id, userUpdates), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete user by id", notes = "")
     public ResponseEntity<User> deleteUser(
             @ApiParam(value = "A user id", required = true)

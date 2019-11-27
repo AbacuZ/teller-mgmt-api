@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import th.co.nuttida.tellermgmt.domain.DataInsertTeller;
+import th.co.nuttida.tellermgmt.domain.DataSearchCriteria;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
 import th.co.nuttida.tellermgmt.service.TellerService;
@@ -39,11 +41,20 @@ public class TellerController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Save teller", notes = "")
+    @ApiOperation(value = "Update teller", notes = "")
     public ResponseEntity<Teller> updateTeller(
             @ApiParam(value = "A teller", required = true)
             @RequestBody DataInsertTeller dataInsertTeller) {
         return new ResponseEntity<>(tellerService.updateTeller(dataInsertTeller), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete teller", notes = "")
+    public ResponseEntity<Teller> deleteTeller(
+            @ApiParam(value = "A teller id", required = true)
+            @PathVariable int id) {
+        tellerService.deleteTeller(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
@@ -68,5 +79,13 @@ public class TellerController {
             @ApiParam(value = "page size", required = false)
             @RequestParam(defaultValue = "10") Integer pageSize) {
         return tellerService.findTeller(pageNo, pageSize);
+    }
+    
+    @PostMapping("/search-map")
+    @ApiOperation(value = "Search teller", notes = "")
+    public ResponseEntity<List<Teller>> searchMapTeller(
+            @ApiParam(value = "Data search criteria", required = false)
+            @RequestBody DataSearchCriteria data) {
+        return new ResponseEntity<>(tellerService.findCriteria(data), HttpStatus.OK);
     }
 }

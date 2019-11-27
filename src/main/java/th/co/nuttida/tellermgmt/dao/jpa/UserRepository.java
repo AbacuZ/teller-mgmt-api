@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import th.co.nuttida.tellermgmt.domain.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 //	@Query("SELECT * FROM user")
 	List<User> findAll();
@@ -25,11 +25,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 //	@Query(value = "SELECT COUNT(id) as count_id FROM user WHERE user_id = :user_id", nativeQuery = true)
 //	int countUser(@Param("user_id") int userId);
-
-	@Modifying
-	@Transactional
-	@Query(value = "DELETE user WHERE user_id = :user_id", nativeQuery = true)
-	void delete(@Param("user_id") int userId);
+        
+        @Query(value = "DELETE * FROM user WHERE user_id = :id", nativeQuery = true)
+        void deleteUserById(@Param("id") int id);
 
         @Query(value = "SELECT * FROM user u WHERE u.username = :username AND u.password = :password", nativeQuery = true)
         User checkLoginUser(@Param("username") String username, @Param("password") String password);

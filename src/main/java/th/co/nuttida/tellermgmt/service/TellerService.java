@@ -1,19 +1,24 @@
 package th.co.nuttida.tellermgmt.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.criteria.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import th.co.nuttida.tellermgmt.dao.jpa.TellerDetailsRepository;
 import th.co.nuttida.tellermgmt.dao.jpa.TellerPagingRepository;
 
 import th.co.nuttida.tellermgmt.dao.jpa.TellerRepository;
 import th.co.nuttida.tellermgmt.domain.DataInsertTeller;
+import th.co.nuttida.tellermgmt.domain.DataSearchCriteria;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerDetails;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
@@ -89,6 +94,13 @@ public class TellerService {
         return tellerRepository.save(teller);
     }
     
+    public void deleteTeller(int id) {
+        Teller teller = tellerRepository.findById(id);
+        tellerRepository.delete(teller);
+        TellerDetails tellerDetails = tellerDetailsRepository.findById(teller.getTellerDetailsId());
+        tellerDetailsRepository.delete(tellerDetails);
+    }
+    
     @Transactional(readOnly = true)
     public TellerSearchPaging findTeller(int pageNo, int pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("tellerId").ascending());
@@ -110,6 +122,42 @@ public class TellerService {
         } else {
             return new TellerSearchPaging();
         }
+    }
+    
+    public List<Teller> findCriteria(DataSearchCriteria data) {
+        return tellerRepository.findAll(getTellerSpecification(data));
+    }
+    
+    private Specification<Teller> getTellerSpecification(DataSearchCriteria data) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            
+            if (!StringUtils.isEmpty(data.getTellerAddress())) {
+                predicates.add(cb.like(root.get("tellerAddress"), "%" + data.getTellerAddress() + "%"));
+            }
+            
+            if (data.getDistrictId() != 0) {
+                predicates.add(cb.equal(root.get("districtId"), data.getDistrictId()));
+            }
+            
+            if (data.getProvinceId() != 0) {
+                predicates.add(cb.equal(root.get("provinceId"), data.getProvinceId()));
+            }
+            
+            if (data.getZoneId() != 0) {
+                predicates.add(cb.equal(root.get("zoneId"), data.getZoneId()));
+            }
+            
+            if (data.getTypeAddressId() != 0) {
+                predicates.add(cb.equal(root.get("typeAddressId"), data.getTypeAddressId()));
+            }
+            
+            if (data.getVersionTellerId() != 0) {
+                predicates.add(cb.equal(root.get("versionTellerId"), data.getVersionTellerId()));
+            }
+            
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
 }
