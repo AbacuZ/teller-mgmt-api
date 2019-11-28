@@ -15,6 +15,6 @@ public interface TypeAddressRepository extends JpaRepository<TypeAddress, Long> 
 //	@Query("SELECT * FROM type_address")
 	List<TypeAddress> findAll();
 
-	@Query(value = "FROM type_address u WHERE u.type_address_id = :type_address_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM type_address u WHERE u.type_address_id = :type_address_id", nativeQuery = true)
 	TypeAddress findById(@Param("type_address_id") int typeAddressId);
 }

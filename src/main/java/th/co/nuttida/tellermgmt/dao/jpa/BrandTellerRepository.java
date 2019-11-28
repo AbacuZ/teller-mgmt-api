@@ -16,6 +16,6 @@ public interface BrandTellerRepository
 //	@Query(value = "SELECT * FROM branch_teller", nativeQuery = true)
 	List<BrandTeller> findAll();
 	
-	@Query(value = "FROM branch_teller u WHERE u.brand_teller_id = :brand_teller_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM branch_teller u WHERE u.brand_teller_id = :brand_teller_id", nativeQuery = true)
     BrandTeller findById(@Param("brand_teller_id") int brandTellerId);
 }

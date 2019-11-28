@@ -15,6 +15,6 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 //	@Query("SELECT * FROM province")
 	List<Province> findAll();
 
-	@Query(value = "FROM province u WHERE u.province_id = :province_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM province u WHERE u.province_id = :province_id", nativeQuery = true)
 	Province findById(@Param("province_id") int provinceId);
 }
