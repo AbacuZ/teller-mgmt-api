@@ -128,6 +128,12 @@ public class TellerService {
         return tellerRepository.findAll(getTellerSpecification(data));
     }
     
+    public List<Teller> findNearest(String lat, String lng) {
+        System.out.println("lat " + lat);
+        System.out.println("lng " + lng);
+        return tellerRepository.findNearestLocation(lat, lng);
+    }
+    
     private Specification<Teller> getTellerSpecification(DataSearchCriteria data) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

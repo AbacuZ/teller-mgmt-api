@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import th.co.nuttida.tellermgmt.domain.CurrentLocation;
 import th.co.nuttida.tellermgmt.domain.DataInsertTeller;
 import th.co.nuttida.tellermgmt.domain.DataSearchCriteria;
 import th.co.nuttida.tellermgmt.domain.Teller;
@@ -87,5 +88,13 @@ public class TellerController {
             @ApiParam(value = "Data search criteria", required = false)
             @RequestBody DataSearchCriteria data) {
         return new ResponseEntity<>(tellerService.findCriteria(data), HttpStatus.OK);
+    }
+    
+    @PostMapping("/find-nearest-location")
+    @ApiOperation(value = "Search nearest current location", notes = "")
+    public ResponseEntity<List<Teller>> searchNearestLocationTeller(
+            @ApiParam(value = "A latitude, longitude", required = false)
+            @RequestBody CurrentLocation data) {
+        return new ResponseEntity<>(tellerService.findNearest(data.getLat(), data.getLng()), HttpStatus.OK);
     }
 }
