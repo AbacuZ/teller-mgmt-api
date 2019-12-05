@@ -31,6 +31,12 @@ public class District implements Serializable {
 
     @Column(name = "district_name_eng")
     private String districtNameEng;
+    
+    @Column(name = "province_id")
+    private Integer provinceId;
+    
+    @Column(name = "zone_id")
+    private Integer zoneId;
 
     public District() {
         super();

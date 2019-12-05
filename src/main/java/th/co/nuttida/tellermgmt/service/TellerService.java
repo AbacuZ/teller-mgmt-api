@@ -135,6 +135,10 @@ public class TellerService {
             if (!StringUtils.isEmpty(data.getTellerAddress())) {
                 predicates.add(cb.like(root.get("tellerAddress"), "%" + data.getTellerAddress() + "%"));
             }
+                        
+            if (!StringUtils.isEmpty(data.getTellerNo())) {
+                predicates.add(cb.equal(root.get("tellerNo"), data.getTellerNo()));
+            }
             
             if (data.getDistrictId() != 0) {
                 predicates.add(cb.equal(root.get("districtId"), data.getDistrictId()));
