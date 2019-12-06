@@ -124,6 +124,29 @@ public class TellerService {
         }
     }
     
+    @Transactional(readOnly = true)
+    public TellerSearchPaging findByTellerNO(DataSearchCriteria data, int pageNo, int pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("tellerId").ascending());
+        Page<Teller> tellerFound = tellerPagingRepository.findAll(getTellerSpecification(data), paging);
+        if(tellerFound.hasContent()) {
+            TellerSearchPaging tellerSearchPaing = new TellerSearchPaging();
+            tellerSearchPaing.setTellerResult(tellerFound.getContent());
+            tellerSearchPaing.setHasNext(tellerFound.hasNext());
+            tellerSearchPaing.setHasPrevious(tellerFound.hasPrevious());
+            tellerSearchPaing.setFirst(tellerFound.isFirst());
+            tellerSearchPaing.setLast(tellerFound.isLast());
+            tellerSearchPaing.setNumber(tellerFound.getNumber());
+            tellerSearchPaing.setNumberOfElements(tellerFound.getNumberOfElements());
+            tellerSearchPaing.setSize(tellerFound.getSize()); 
+            tellerSearchPaing.setTotalPages(tellerFound.getTotalPages());
+            tellerSearchPaing.setRecordsTotal(tellerFound.getTotalElements());
+            tellerSearchPaing.setRecordsFiltered(tellerFound.getTotalElements());
+            return tellerSearchPaing;
+        } else {
+            return new TellerSearchPaging();
+        }
+    }
+    
     public List<Teller> findCriteria(DataSearchCriteria data) {
         return tellerRepository.findAll(getTellerSpecification(data));
     }
