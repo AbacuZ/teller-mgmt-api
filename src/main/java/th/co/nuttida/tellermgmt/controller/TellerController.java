@@ -97,4 +97,17 @@ public class TellerController {
             @RequestBody CurrentLocation data) {
         return new ResponseEntity<>(tellerService.findNearest(data.getLat(), data.getLng()), HttpStatus.OK);
     }
+    
+    @PostMapping("/search-teller-no")
+    @ApiOperation(value = "Search teller", notes = "")
+    public ResponseEntity<TellerSearchPaging> searchTellerNo(
+            @ApiParam(value = "page number", required = false)
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @ApiParam(value = "page size", required = false)
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @ApiParam(value = "Data search criteria", required = false)
+            @RequestBody String tellerNo) {
+        return new ResponseEntity<>(tellerService.findByTellerNO(tellerNo, pageNo, pageSize), HttpStatus.OK);
+    }
+    
 }

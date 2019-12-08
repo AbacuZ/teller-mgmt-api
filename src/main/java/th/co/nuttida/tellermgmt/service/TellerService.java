@@ -125,9 +125,10 @@ public class TellerService {
     }
     
     @Transactional(readOnly = true)
-    public TellerSearchPaging findByTellerNO(DataSearchCriteria data, int pageNo, int pageSize) {
+    public TellerSearchPaging findByTellerNO(String tellerNo, int pageNo, int pageSize) {
+        System.out.println("TellerNo ==================================================================> " + tellerNo);
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("tellerId").ascending());
-        Page<Teller> tellerFound = tellerPagingRepository.findAll(getTellerSpecification(data), paging);
+        Page<Teller> tellerFound = tellerPagingRepository.findAll(getTellerNoSpecification(tellerNo), paging);
         if(tellerFound.hasContent()) {
             TellerSearchPaging tellerSearchPaing = new TellerSearchPaging();
             tellerSearchPaing.setTellerResult(tellerFound.getContent());
@@ -155,6 +156,18 @@ public class TellerService {
         System.out.println("lat " + lat);
         System.out.println("lng " + lng);
         return tellerRepository.findNearestLocation(lat, lng);
+    }
+    
+    private Specification<Teller> getTellerNoSpecification(String tellerNo) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+                        
+            if (!StringUtils.isEmpty(tellerNo)) {
+                predicates.add(cb.like(root.get("tellerNo"), "%" + tellerNo + "%"));
+            }
+            
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
     
     private Specification<Teller> getTellerSpecification(DataSearchCriteria data) {
