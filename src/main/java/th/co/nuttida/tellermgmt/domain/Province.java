@@ -25,7 +25,7 @@ public class Province implements Serializable {
 
 	@Column(name = "province_name_eng")
 	private String provinceNameEng;
-
+        
 	public Province() {
 	}
 

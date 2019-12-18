@@ -10,6 +10,7 @@ public class DataSearchCriteria {
     private int districtId;
     private int provinceId;
     private int zoneId;
-    private int typeAddressId;
     private int versionTellerId;
+    private int typeTellerId;
+    private int brandTellerId;
 }

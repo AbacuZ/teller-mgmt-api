@@ -60,9 +60,11 @@ public class TellerService {
         teller.setZoneId(data.getTeller().getZoneId());
         teller.setProvinceId(data.getTeller().getProvinceId());
         teller.setDistrictId(data.getTeller().getDistrictId());
+        teller.setTellerDetailsId(tellerDetails.getTellerDetailsId());
         teller.setTypeAddressId(data.getTeller().getTypeAddressId());
         teller.setVersionTellerId(data.getTeller().getVersionTellerId());
-        teller.setTellerDetailsId(tellerDetails.getTellerDetailsId());
+        teller.setTypeTellerId(data.getTeller().getTypeTellerId());
+        teller.setBrandTellerId(data.getTeller().getBrandTellerId());
         return tellerRepository.save(teller);
     }
     
@@ -88,9 +90,11 @@ public class TellerService {
         teller.setZoneId(data.getTeller().getZoneId());
         teller.setProvinceId(data.getTeller().getProvinceId());
         teller.setDistrictId(data.getTeller().getDistrictId());
+        teller.setTellerDetailsId(tellerDetails.getTellerDetailsId());
         teller.setTypeAddressId(data.getTeller().getTypeAddressId());
         teller.setVersionTellerId(data.getTeller().getVersionTellerId());
-        teller.setTellerDetailsId(tellerDetails.getTellerDetailsId());
+        teller.setTypeTellerId(data.getTeller().getTypeTellerId());
+        teller.setBrandTellerId(data.getTeller().getBrandTellerId());
         return tellerRepository.save(teller);
     }
     
@@ -179,7 +183,7 @@ public class TellerService {
             }
                         
             if (!StringUtils.isEmpty(data.getTellerNo())) {
-                predicates.add(cb.equal(root.get("tellerNo"), data.getTellerNo()));
+                predicates.add(cb.like(root.get("tellerNo"), "%" + data.getTellerNo() + "%"));
             }
             
             if (data.getDistrictId() != 0) {
@@ -194,12 +198,16 @@ public class TellerService {
                 predicates.add(cb.equal(root.get("zoneId"), data.getZoneId()));
             }
             
-            if (data.getTypeAddressId() != 0) {
-                predicates.add(cb.equal(root.get("typeAddressId"), data.getTypeAddressId()));
-            }
-            
             if (data.getVersionTellerId() != 0) {
                 predicates.add(cb.equal(root.get("versionTellerId"), data.getVersionTellerId()));
+            }
+            
+            if (data.getTypeTellerId() != 0) {
+                predicates.add(cb.equal(root.get("typeTellerId"), data.getTypeTellerId()));
+            }
+            
+            if (data.getBrandTellerId() != 0) {
+                predicates.add(cb.equal(root.get("brandTellerId"), data.getBrandTellerId()));
             }
             
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
