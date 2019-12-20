@@ -6,7 +6,6 @@ import lombok.Data;
 public class DataSearchCriteria {
 
     private String tellerAddress;
-    private String tellerNo;
     private int districtId;
     private int provinceId;
     private int zoneId;

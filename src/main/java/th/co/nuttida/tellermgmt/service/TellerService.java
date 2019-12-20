@@ -179,11 +179,10 @@ public class TellerService {
             List<Predicate> predicates = new ArrayList<>();
             
             if (!StringUtils.isEmpty(data.getTellerAddress())) {
-                predicates.add(cb.like(root.get("tellerAddress"), "%" + data.getTellerAddress() + "%"));
-            }
-                        
-            if (!StringUtils.isEmpty(data.getTellerNo())) {
-                predicates.add(cb.like(root.get("tellerNo"), "%" + data.getTellerNo() + "%"));
+                predicates.add(cb.or(
+                        cb.like(root.get("tellerAddress"), "%" + data.getTellerAddress() + "%"),
+                        cb.like(root.get("tellerNo"), "%" + data.getTellerAddress() + "%")
+                ));
             }
             
             if (data.getDistrictId() != 0) {
