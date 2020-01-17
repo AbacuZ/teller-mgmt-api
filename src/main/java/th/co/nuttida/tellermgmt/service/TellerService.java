@@ -347,7 +347,7 @@ public class TellerService {
                 predicates.add(cb.equal(root.get("brandTellerId"), data.getBrandTellerId()));
             }
 
-            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
 
