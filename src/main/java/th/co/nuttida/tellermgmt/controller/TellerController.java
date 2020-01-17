@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import th.co.nuttida.tellermgmt.domain.CurrentLocation;
 import th.co.nuttida.tellermgmt.domain.DataInsertTeller;
 import th.co.nuttida.tellermgmt.domain.DataSearchCriteria;
+import th.co.nuttida.tellermgmt.domain.ResultTeller;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
 import th.co.nuttida.tellermgmt.service.TellerService;
@@ -108,6 +109,14 @@ public class TellerController {
             @ApiParam(value = "Data search criteria", required = false)
             @RequestBody String tellerNo) {
         return new ResponseEntity<>(tellerService.findByTellerNO(tellerNo, pageNo, pageSize), HttpStatus.OK);
+    }
+    
+    @PostMapping("/export-excel")
+    @ApiOperation(value = "Search teller", notes = "")
+    public ResponseEntity<List<ResultTeller>> exportExcel(
+            @ApiParam(value = "Data search criteria", required = false)
+            @RequestBody DataSearchCriteria data) {
+        return new ResponseEntity<>(tellerService.exportExcel(data), HttpStatus.OK);
     }
     
 }

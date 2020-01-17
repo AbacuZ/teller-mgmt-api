@@ -15,7 +15,7 @@ public interface TypeTellerRepository extends JpaRepository<TypeTeller, Long> {
 //	@Query("SELECT * FROM type_teller")
 	List<TypeTeller> findAll();
 
-	@Query(value = "FROM type_teller u WHERE u.type_teller_id = :type_teller_id", nativeQuery = true)
+	@Query(value = "SELECT * FROM type_teller u WHERE u.type_teller_id = :type_teller_id", nativeQuery = true)
 	TypeTeller findById(@Param("type_teller_id") int typeTellerId);
 
 }

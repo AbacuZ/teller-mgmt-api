@@ -10,12 +10,11 @@ import org.springframework.stereotype.Repository;
 import th.co.nuttida.tellermgmt.domain.BrandTeller;
 
 @Repository
-public interface BrandTellerRepository
-		extends JpaRepository<BrandTeller, Long> {
+public interface BrandTellerRepository extends JpaRepository<BrandTeller, Long> {
 
 //	@Query(value = "SELECT * FROM branch_teller", nativeQuery = true)
-	List<BrandTeller> findAll();
-	
-	@Query(value = "SELECT * FROM branch_teller u WHERE u.brand_teller_id = :brand_teller_id", nativeQuery = true)
+    List<BrandTeller> findAll();
+
+    @Query(value = "SELECT * FROM brand_teller u WHERE u.brand_teller_id = :brand_teller_id", nativeQuery = true)
     BrandTeller findById(@Param("brand_teller_id") int brandTellerId);
 }
