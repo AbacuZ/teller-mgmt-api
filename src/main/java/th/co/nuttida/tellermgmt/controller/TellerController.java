@@ -22,6 +22,7 @@ import th.co.nuttida.tellermgmt.domain.CurrentLocation;
 import th.co.nuttida.tellermgmt.domain.DataInsertTeller;
 import th.co.nuttida.tellermgmt.domain.DataSearchCriteria;
 import th.co.nuttida.tellermgmt.domain.ResultTeller;
+import th.co.nuttida.tellermgmt.domain.ResultTellerAndTellerDetails;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
 import th.co.nuttida.tellermgmt.service.TellerService;
@@ -93,7 +94,7 @@ public class TellerController {
     
     @PostMapping("/find-nearest-location")
     @ApiOperation(value = "Search nearest current location", notes = "")
-    public ResponseEntity<List<Object>> searchNearestLocationTeller(
+    public ResponseEntity<List<ResultTellerAndTellerDetails>> searchNearestLocationTeller(
             @ApiParam(value = "A latitude, longitude", required = false)
             @RequestBody CurrentLocation data) {
         return new ResponseEntity<>(tellerService.findNearest(data.getLat(), data.getLng()), HttpStatus.OK);

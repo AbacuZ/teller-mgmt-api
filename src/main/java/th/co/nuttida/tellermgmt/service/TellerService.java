@@ -1,5 +1,6 @@
 package th.co.nuttida.tellermgmt.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,7 @@ import th.co.nuttida.tellermgmt.domain.DataSearchCriteria;
 import th.co.nuttida.tellermgmt.domain.District;
 import th.co.nuttida.tellermgmt.domain.Province;
 import th.co.nuttida.tellermgmt.domain.ResultTeller;
+import th.co.nuttida.tellermgmt.domain.ResultTellerAndTellerDetails;
 import th.co.nuttida.tellermgmt.domain.Teller;
 import th.co.nuttida.tellermgmt.domain.TellerDetails;
 import th.co.nuttida.tellermgmt.domain.TellerSearchPaging;
@@ -193,10 +195,34 @@ public class TellerService {
         return tellerRepository.findAll(getTellerSpecification(data));
     }
 
-    public List<Object> findNearest(String lat, String lng) {
+    public List<ResultTellerAndTellerDetails> findNearest(String lat, String lng) {
         System.out.println("lat " + lat);
         System.out.println("lng " + lng);
-        return tellerRepository.findNearestLocationExcel(lat, lng);
+        List<Teller> tellerList = tellerRepository.findNearestLocation(lat, lng);
+        List<ResultTellerAndTellerDetails> resultTellerList = new ArrayList<>();
+        tellerList.forEach(item -> {
+            ResultTellerAndTellerDetails data = new ResultTellerAndTellerDetails();
+            data.setTellerId(item.getTellerId());
+            data.setTellerNo(item.getTellerNo());
+            data.setTelTellerAddress(item.getTellerAddress());
+            data.setTelTellerAddress(item.getTelTellerAddress());
+            data.setLongitude(item.getLongitude());
+            data.setLatitude(item.getLatitude());
+            data.setSerial(item.getSerial());
+            data.setContractNo(item.getContractNo());
+            data.setBranch(item.getBranch());
+            data.setGprsCompany(item.getGprsCompany());
+            data.setBrandTellerId(item.getBrandTellerId());
+            data.setDistrictId(item.getDistrictId());
+            data.setProvinceId(item.getProvinceId());
+            data.setTellerDetailsId(item.getTellerDetailsId());
+            data.setTypeAddressId(item.getTypeAddressId());
+            data.setTypeTellerId(item.getTypeTellerId());
+            data.setVersionTellerId(item.getVersionTellerId());
+            data.setZoneId(item.getZoneId());
+            resultTellerList.add(data);
+        });
+        return resultTellerList;
     }
 
     public List<ResultTeller> exportExcel(DataSearchCriteria data) {
