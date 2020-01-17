@@ -119,4 +119,11 @@ public class TellerController {
         return new ResponseEntity<>(tellerService.exportExcel(data), HttpStatus.OK);
     }
     
+    @PostMapping("/export-excel-map")
+    @ApiOperation(value = "Search teller", notes = "")
+    public ResponseEntity<List<ResultTeller>> exportExcelMap(
+            @ApiParam(value = "Data search criteria", required = false)
+            @RequestBody CurrentLocation data) {
+        return new ResponseEntity<>(tellerService.exportExcelMap(data.getLat(), data.getLng()), HttpStatus.OK);
+    }
 }

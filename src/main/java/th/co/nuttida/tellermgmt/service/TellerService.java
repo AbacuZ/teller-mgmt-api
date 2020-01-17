@@ -248,6 +248,55 @@ public class TellerService {
         return resultTellerList;
     }
 
+    public List<ResultTeller> exportExcelMap(String lat, String lng) {
+        List<Teller> teller = tellerRepository.findNearestLocation(lat, lng);
+        List<ResultTeller> resultTellerList = new ArrayList<>();
+        ResultTeller resultTeller = new ResultTeller();
+
+        teller.forEach(item -> {
+            resultTeller.setTellerNo(item.getTellerNo());
+            resultTeller.setTelTellerAddress(item.getTellerAddress());
+            resultTeller.setTelTellerAddress(item.getTelTellerAddress());
+            resultTeller.setLongitude(item.getLongitude());
+            resultTeller.setLatitude(item.getLatitude());
+            resultTeller.setSerial(item.getSerial());
+            resultTeller.setContractNo(item.getContractNo());
+            resultTeller.setBranch(item.getBranch());
+            resultTeller.setGprsCompany(item.getGprsCompany());
+
+            TellerDetails tellerDetails = tellerDetailsRepository.findById(item.getTellerDetailsId());
+            resultTeller.setIndexMasterKey(tellerDetails.getIndexMasterKey());
+            resultTeller.setIpAddress(tellerDetails.getIpAddress());
+            resultTeller.setIpGateway(tellerDetails.getIpGateway());
+            resultTeller.setLocalPort(tellerDetails.getLocalPort());
+            resultTeller.setServicePort(tellerDetails.getServicePort());
+
+            BrandTeller brand = brandTellerRepository.findById(item.getBrandTellerId());
+            resultTeller.setBrandTeller(brand.getBrandTellerName());
+            
+            District district = districtRepository.findById(item.getDistrictId());
+            resultTeller.setDistrict(district.getDistrictNameThai());
+
+            Province province = provinceRepository.findById(item.getProvinceId());
+            resultTeller.setProvince(province.getProvinceNameThai());
+
+            Zone zone = zoneRepository.findById(item.getZoneId());
+            resultTeller.setZone(zone.getZoneName());
+
+            TypeTeller typeTeller = typeTellerRepository.findById(item.getTypeTellerId());
+            resultTeller.setTypeTeller(typeTeller.getTypeTellerName());
+            
+            TypeAddress typeAddress = typeAddressRepository.findById(item.getTypeAddressId());
+            resultTeller.setTypeAddress(typeAddress.getTypeAddressName());
+            
+            Optional<VersionTeller> versionTeller = versionRepository.findById(item.getVersionTellerId());
+            resultTeller.setVersionTeller(versionTeller.get().getVersionTellerName());
+
+            resultTellerList.add(resultTeller);
+        });
+        return resultTellerList;
+    }
+
     private Specification<Teller> getTellerNoSpecification(String tellerNo) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -298,7 +347,7 @@ public class TellerService {
                 predicates.add(cb.equal(root.get("brandTellerId"), data.getBrandTellerId()));
             }
 
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
 

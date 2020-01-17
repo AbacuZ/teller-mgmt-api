@@ -25,6 +25,6 @@ public interface TellerRepository extends JpaRepository<Teller, Long>, JpaSpecif
         @Query(value = "SELECT *, (6371 * acos( cos( radians(:lat) ) * cos( radians( latitude ) )" +
                 " * cos( radians( longitude ) - radians(:lng) ) + sin( radians(:lat) )" +
                 " * sin( radians( latitude ) ) ) ) AS distance FROM teller HAVING" +
-                " distance < 5 ORDER BY distance;", nativeQuery = true)
+                " distance < 5 ORDER BY distance asc;", nativeQuery = true)
         List<Teller> findNearestLocation(@Param("lat") String lat, @Param("lng") String lng);
 }
