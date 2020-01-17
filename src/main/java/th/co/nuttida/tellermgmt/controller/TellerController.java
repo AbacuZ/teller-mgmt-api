@@ -93,7 +93,7 @@ public class TellerController {
     
     @PostMapping("/find-nearest-location")
     @ApiOperation(value = "Search nearest current location", notes = "")
-    public ResponseEntity<List<Teller>> searchNearestLocationTeller(
+    public ResponseEntity<List<Object>> searchNearestLocationTeller(
             @ApiParam(value = "A latitude, longitude", required = false)
             @RequestBody CurrentLocation data) {
         return new ResponseEntity<>(tellerService.findNearest(data.getLat(), data.getLng()), HttpStatus.OK);
