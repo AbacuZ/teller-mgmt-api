@@ -201,8 +201,6 @@ public class TellerService {
     public List<ResultTellerAndTellerDetails> findNearest(String lat, String lng) {
         System.out.println("lat " + lat);
         System.out.println("lng " + lng);
-        lat = "13.7756627";
-        lng = "100.522696";
         List<ResultTellerAndTellerDetails> tellerList = tellerImpl.findNearestLocationMap(lat, lng);
         return tellerList;
     }
