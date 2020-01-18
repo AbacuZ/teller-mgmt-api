@@ -1,6 +1,5 @@
 package th.co.nuttida.tellermgmt.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +39,7 @@ import th.co.nuttida.tellermgmt.domain.TypeAddress;
 import th.co.nuttida.tellermgmt.domain.TypeTeller;
 import th.co.nuttida.tellermgmt.domain.VersionTeller;
 import th.co.nuttida.tellermgmt.domain.Zone;
+import th.co.nuttida.tellermgmt.jdbc.TellerImpl;
 
 @Service
 @Transactional
@@ -74,7 +74,10 @@ public class TellerService {
 
     @Autowired
     private VersionRepository versionRepository;
-
+    
+    @Autowired
+    private TellerImpl tellerImpl;
+    
     public List<Teller> findAll() {
         return tellerRepository.findAll();
     }
@@ -198,31 +201,10 @@ public class TellerService {
     public List<ResultTellerAndTellerDetails> findNearest(String lat, String lng) {
         System.out.println("lat " + lat);
         System.out.println("lng " + lng);
-        List<Teller> tellerList = tellerRepository.findNearestLocation(lat, lng);
-        List<ResultTellerAndTellerDetails> resultTellerList = new ArrayList<>();
-        tellerList.forEach(item -> {
-            ResultTellerAndTellerDetails data = new ResultTellerAndTellerDetails();
-            data.setTellerId(item.getTellerId());
-            data.setTellerNo(item.getTellerNo());
-            data.setTelTellerAddress(item.getTellerAddress());
-            data.setTelTellerAddress(item.getTelTellerAddress());
-            data.setLongitude(item.getLongitude());
-            data.setLatitude(item.getLatitude());
-            data.setSerial(item.getSerial());
-            data.setContractNo(item.getContractNo());
-            data.setBranch(item.getBranch());
-            data.setGprsCompany(item.getGprsCompany());
-            data.setBrandTellerId(item.getBrandTellerId());
-            data.setDistrictId(item.getDistrictId());
-            data.setProvinceId(item.getProvinceId());
-            data.setTellerDetailsId(item.getTellerDetailsId());
-            data.setTypeAddressId(item.getTypeAddressId());
-            data.setTypeTellerId(item.getTypeTellerId());
-            data.setVersionTellerId(item.getVersionTellerId());
-            data.setZoneId(item.getZoneId());
-            resultTellerList.add(data);
-        });
-        return resultTellerList;
+        lat = "13.7756627";
+        lng = "100.522696";
+        List<ResultTellerAndTellerDetails> tellerList = tellerImpl.findNearestLocationMap(lat, lng);
+        return tellerList;
     }
 
     public List<ResultTeller> exportExcel(DataSearchCriteria data) {

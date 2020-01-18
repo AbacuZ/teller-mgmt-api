@@ -1,10 +1,17 @@
 package th.co.nuttida.tellermgmt.domain;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Data;
 
 @Data
 public class ResultTellerAndTellerDetails {
-    
+
     private Integer tellerId;
     private String tellerNo;
     private String tellerAddress;
@@ -23,4 +30,5 @@ public class ResultTellerAndTellerDetails {
     private int versionTellerId;
     private int typeTellerId;
     private int brandTellerId;
+    private double distance;
 }
